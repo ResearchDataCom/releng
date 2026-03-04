@@ -1,0 +1,27 @@
+name: Lint Python code
+description: >-
+  Checks code syntax/style using the configured pre-commit hooks,
+  which not everyone installs.  Returns a list of pinned dependencies
+  formatted for inclusion in requirements.txt, which facilitates
+  reproducible builds.
+
+runs:
+  using: composite
+  steps:
+    - uses: actions/checkout@v6.0.2
+    - uses: pre-commit/action@v3.0.1
+    - shell: bash
+      run: pip install pip-tools
+    - shell: bash
+      run: pip-compile
+    - id: requirements
+      shell: bash
+      run: |
+        echo 'requirements<<EOF' >> $GITHUB_OUTPUT
+        cat requirements.txt >> $GITHUB_OUTPUT
+        echo EOF >> $GITHUB_OUTPUT
+
+outputs:
+  requirements:
+    description: Dependency pins in PEP 508 format.
+    value: ${{ steps.requirements.outputs.requirements }}

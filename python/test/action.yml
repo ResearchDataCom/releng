@@ -1,0 +1,49 @@
+name: Test Python code
+description: >-
+  Runs pytest via GNU Make and returns the results.  Installs Python
+  and Google Chrome, along with the matching version of chromedriver.
+  The makefile's `build-deps` target, which runs as the superuser, or
+  its `test` target **MUST** handle other dependencies.
+
+inputs:
+  python-version:
+    description: The desired version of Python.
+    default: "3.12"
+  requirements:
+    description: >-
+      Optional Python package dependency pins in PEP 508 format.
+    default: ""
+
+runs:
+  using: composite
+  steps:
+    - uses: actions/checkout@v6.0.2
+    - uses: actions/setup-python@v6.2.0
+      with:
+        python-version: ${{ inputs.python-version }}
+        cache: pip
+    - uses: browser-actions/setup-chrome@v2.1.1
+      with:
+        install-dependencies: true
+        install-chromedriver: true
+    - shell: bash
+      run: sudo make build-deps
+    - id: pin-dependencies
+      shell: bash
+      run: |
+        cat > requirements.txt <<"EOF"
+        ${{ inputs.requirements }}
+        EOF
+    - shell: bash
+      run: make test PYTEST_ARGS=--report-log=pytest.out
+    - id: report-log
+      shell: bash
+      run: |
+        echo 'report-log<<EOF' >> $GITHUB_OUTPUT
+        cat pytest.out >> $GITHUB_OUTPUT
+        echo EOF >> $GITHUB_OUTPUT
+
+outputs:
+  report-log:
+    description: The pytest report log.
+    value: ${{ steps.report-log.outputs.report-log }}
