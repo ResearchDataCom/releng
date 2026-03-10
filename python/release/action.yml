@@ -1,0 +1,46 @@
+name: Release Python code
+description: >-
+  Determine the next version number, update project metadata, build
+  source/binary distributions, and publish the new release.
+
+inputs:
+  requirements:
+    description: >-
+      Optional Python package dependency pins in PEP 508 format.
+    default: ""
+
+runs:
+  using: composite
+  steps:
+    - uses: actions/checkout@v6.0.2
+      with:
+        ref: ${{ github.ref_name }}
+    - shell: bash
+      run: git reset --hard ${{ github.sha }}
+    - id: release
+      uses: python-semantic-release/python-semantic-release@v10.5.3
+      with:
+        github_token: ${{ secrets.GITHUB_TOKEN }}
+    - id: pin-dependencies
+      if: steps.release.outputs.released == 'true' && inputs.requirements
+      shell: bash
+      run: |
+        cat > requirements.txt <<"EOF"
+        ${{ inputs.requirements }}
+        EOF
+    - id: build
+      if: steps.release.outputs.released == 'true'
+      shell: bash
+      run: |
+        pip install -U build twine
+        python -m build
+        python -m twine check dist/*
+    - id: publish-dependencies
+      if: steps.release.outputs.released == 'true' && inputs.requirements
+      shell: bash
+      run: mv requirements.txt dist/
+    - if: steps.release.outputs.released == 'true'
+      uses: python-semantic-release/publish-action@v10.5.3
+      with:
+        github_token: ${{ secrets.GITHUB_TOKEN }}
+        tag: ${{ inputs.tag }}

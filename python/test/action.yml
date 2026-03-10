@@ -2,12 +2,13 @@ name: Test Python code
 description: >-
   Runs pytest via GNU Make and returns the results.  Installs Python
   and Google Chrome, along with the matching version of chromedriver.
-  The makefile's `build-deps` target, which runs as the superuser, or
-  its `test` target **MUST** handle other dependencies.
+  The makefile targets `build-deps`, which runs as the superuser, and
+  `test` **MUST** handle other test dependencies.  Supports
+  [matrix strategies](https://docs.github.com/en/actions/how-tos/write-workflows/choose-what-workflows-do/run-job-variations).
 
 inputs:
   python-version:
-    description: The desired version of Python.
+    description: The version of Python with which to test.
     default: "3.12"
   requirements:
     description: >-
@@ -29,6 +30,7 @@ runs:
     - shell: bash
       run: sudo make build-deps
     - id: pin-dependencies
+      if: inputs.requirements
       shell: bash
       run: |
         cat > requirements.txt <<"EOF"

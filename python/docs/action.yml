@@ -1,0 +1,34 @@
+name: Document Python code
+description: >-
+  Runs Sphinx via GNU Make and stores the built documentation in a
+  GitHub Actions artifact, an immutable archive.  Installs Python; the
+  makefile targets `build-deps`, which runs as the superuser, and
+  `docs` **MUST** handle other build dependencies.
+
+inputs:
+  artifact-name:
+    description: The name of the immutable archive.
+    default: docs-artifacts
+  python-version:
+    description: The version of Python against which to build.
+    default: "3.12"
+
+runs:
+  using: composite
+  steps:
+    - uses: actions/checkout@v6.0.2
+      with:
+        fetch-depth: 0
+    - uses: actions/setup-python@v6.2.0
+      with:
+        python-version: ${{ inputs.python-version }}
+        cache: pip
+    - shell: bash
+      run: sudo make build-deps
+    - shell: bash
+      run: make docs
+    - uses: actions/upload-artifact@v7.0.0
+      with:
+        name: ${{ inputs.artifact-name }}
+        path: build/*
+        if-no-files-found: error
