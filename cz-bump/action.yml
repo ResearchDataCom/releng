@@ -1,0 +1,38 @@
+name: Release code
+description: >-
+  Determines the next version number, updates project metadata, and
+  tags the new release.  The calling GitHub Actions workflow job
+  **MUST** have permission to
+  [create or update file contents](https://docs.github.com/en/rest/repos/contents)
+  (`contents: write`).
+
+inputs:
+  artifact-name:
+    description: >-
+      The name of the immutable archive that will contain the release.
+    default: release-artifacts
+
+runs:
+  using: composite
+  steps:
+    - uses: actions/checkout@v6.0.2
+      with:
+        fetch-depth: 0
+    - id: cz
+      uses: commitizen-tools/commitizen-action@0.27.1
+      with:
+        changelog_increment_filename: body.md
+        github_token: ${{ secrets.GITHUB_TOKEN }}
+    - uses: actions/upload-artifact@v7.0.0
+      with:
+        name: ${{ inputs.artifact-name }}
+        path: .
+        if-no-files-found: error
+
+outputs:
+  released:
+    description: Signals whether this made a release.
+    value: ${{ steps.cz.outputs.previous_version != steps.cz.outputs.new_version }}
+  tag:
+    description: The Git tag corresponding to the release.
+    value: v${{ env.REVISION }}

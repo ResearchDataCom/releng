@@ -1,0 +1,36 @@
+# Ignore temporary files/folders, but note that this doesn't always
+# work.  Check each linter's documentation for any required
+# tool-specific exclusions; cf. https://stackoverflow.com/a/75560858.
+exclude: |-
+  (?x)^(
+      build.*|
+      dist.*
+  )$
+
+repos:
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v6.0.0
+    hooks:
+      - id: check-yaml
+      - id: end-of-file-fixer
+      - id: trailing-whitespace
+
+  # Ensure commit messages use Conventional Commits formatting;
+  # cf. .cz.toml.
+  - repo: https://github.com/commitizen-tools/commitizen
+    rev: v4.13.9
+    hooks:
+      - id: commitizen
+
+  # Check shell scripts, limiting output to errors and warnings.
+  - repo: https://github.com/koalaman/shellcheck-precommit
+    rev: v0.11.0
+    hooks:
+      - id: shellcheck
+        args: ["--severity=warning"]
+
+  # Check GitHub Actions workflows.
+  - repo: https://github.com/rhysd/actionlint
+    rev: v1.7.11
+    hooks:
+      - id: actionlint

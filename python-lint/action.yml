@@ -1,0 +1,31 @@
+name: Lint Python code
+description: >-
+  Checks code syntax/style using the configured pre-commit hooks,
+  which not everyone installs.  Pins dependencies and stores them in a
+  [GitHub Actions workflow artifact](https://docs.github.com/en/actions/concepts/workflows-and-actions/workflow-artifacts),
+  an immutable archive, which facilitates reproducible builds.
+
+inputs:
+  artifact-name:
+    description: >-
+      The name of the immutable archive that will contain the
+      dependency pins.
+    default: pip-compile-artifacts
+  python-version:
+    description: The version of Python against which to build.
+    default: "3.12"
+
+runs:
+  using: composite
+  steps:
+    - uses: actions/checkout@v6.0.2
+    - uses: pre-commit/action@v3.0.1
+    - shell: bash
+      run: pip install pip-tools
+    - shell: bash
+      run: pip-compile
+    - uses: actions/upload-artifact@v7.0.0
+      with:
+        name: ${{ inputs.artifact-name }}
+        path: requirements.txt
+        if-no-files-found: error
