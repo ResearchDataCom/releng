@@ -38,7 +38,7 @@ runs:
 outputs:
   released:
     description: Signals whether this made a release.
-    value: ${{ steps.cz.outputs.previous_version != steps.cz.outputs.new_version }}
+    value: ${{ steps.cz.outputs.previous_version != steps.cz.outputs.next_version }}
   tag:
     description: The Git tag corresponding to the release.
-    value: v${{ env.REVISION }}
+    value: v${{ steps.cz.outputs.next_version }}
