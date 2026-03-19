@@ -11,6 +11,12 @@ inputs:
     description: >-
       The name of the immutable archive that will contain the release.
     default: release-artifacts
+  changelog-fragment:
+    description: >-
+      The name of a Markdown document to be created by this workflow
+      that will contain release notes for the new version.  Disable by
+      setting this to the empty string (`""`).
+    value: body.md
 
 runs:
   using: composite
@@ -21,7 +27,7 @@ runs:
     - id: cz
       uses: commitizen-tools/commitizen-action@0.27.1
       with:
-        changelog_increment_filename: body.md
+        changelog_increment_filename: ${{ inputs.changelog-fragment }}
         github_token: ${{ secrets.GITHUB_TOKEN }}
     - uses: actions/upload-artifact@v7.0.0
       with:

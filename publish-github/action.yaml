@@ -12,10 +12,11 @@ inputs:
     description: >-
       A comma-delimited list of artifact paths to upload (required);
       supports globbing.
-  body-file:
+  changelog-fragment:
     description: >-
-      Optional; the name of a Markdown document containing release
-      notes.
+      The name of a Markdown document containing release notes for the
+      new version.  Disable by setting this to the empty string
+      (`""`).
     value: ""
   tag:
     description: The version tag to publish (required).
@@ -29,5 +30,5 @@ runs:
     - uses: ncipollo/release-action@v1.21.0
       with:
         artifacts: ${{ inputs.artifact-paths }}
-        bodyFile: ${{ inputs.body-file }}
+        bodyFile: ${{ inputs.changelog-fragment }}
         tag: ${{ inputs.tag }}
