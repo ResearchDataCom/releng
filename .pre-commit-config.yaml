@@ -1,12 +1,3 @@
-# Ignore temporary files/folders, but note that this doesn't always
-# work.  Check each linter's documentation for any required
-# tool-specific exclusions; cf. https://stackoverflow.com/a/75560858.
-exclude: |-
-  (?x)^(
-      build.*|
-      dist.*
-  )$
-
 repos:
   - repo: https://github.com/pre-commit/pre-commit-hooks
     rev: v6.0.0
