@@ -1,0 +1,50 @@
+---
+name: Continuous Integration
+
+# Trigger this workflow manually, by pushing commits to any branch, or
+# by filing a pull request.
+on:
+  workflow_dispatch:
+  push:
+  pull_request:
+
+permissions: read-all
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6.0.2
+      - uses: pre-commit/action@v3.0.1
+
+  release:
+    # Prevent race conditions of more than one release job in case of
+    # multiple pushes to the main branch in a short period of time.
+    concurrency:
+      group: ${{ github.workflow }}-release-${{ github.ref_name }}
+      cancel-in-progress: false
+    needs:
+      - lint
+    if: github.ref == 'refs/heads/main'
+    permissions:
+      contents: write
+    runs-on: ubuntu-latest
+    steps:
+      - id: release
+        uses: ./cz-bump
+    outputs:
+      released: ${{ steps.release.outputs.released }}
+      tag: ${{ steps.release.outputs.tag }}
+
+  github:
+    needs:
+      - release
+    if: needs.release.outputs.released
+    permissions:
+      contents: write
+    runs-on: ubuntu-latest
+    steps:
+      - uses: ./publish-github
+        with:
+          artifact-paths: ""
+          tag: ${{ needs.release.outputs.tag }}
