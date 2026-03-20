@@ -10,16 +10,19 @@ description: >-
 inputs:
   artifact-paths:
     description: >-
-      A comma-delimited list of artifact paths to upload (required);
-      supports globbing.
+      A comma-delimited list of artifact paths to upload; supports
+      globbing.
+    required: true
   changelog-fragment:
     description: >-
       The name of a Markdown document containing release notes for the
       new version.  Disable by setting this to the empty string
       (`""`).
-    value: ""
+    required: true
+    default: ""
   tag:
-    description: The version tag to publish (required).
+    description: The version tag to publish.
+    required: true
 
 runs:
   using: composite

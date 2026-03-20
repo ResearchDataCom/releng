@@ -10,13 +10,15 @@ inputs:
   artifact-name:
     description: >-
       The name of the immutable archive that will contain the release.
+    required: true
     default: release-artifacts
   changelog-fragment:
     description: >-
       The name of a Markdown document to be created by this workflow
       that will contain release notes for the new version.  Disable by
       setting this to the empty string (`""`).
-    value: body.md
+    required: true
+    default: body.md
 
 runs:
   using: composite

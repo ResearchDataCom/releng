@@ -10,10 +10,11 @@ inputs:
   python-version:
     description: The version of Python with which to test.
     default: "3.12"
+    required: true
   requirements:
     description: >-
-      Optional; the name of a workflow artifact containing Python
-      package dependency pins.
+      The name of a workflow artifact containing Python package
+      dependency pins.
     default: pip-compile-artifacts
 
 runs:

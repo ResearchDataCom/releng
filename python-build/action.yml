@@ -12,26 +12,27 @@ inputs:
     description: >-
       The name of the immutable archive that will contain the built
       Python distribution.
+    required: true
     default: build-artifacts
   python-version:
     description: The version of Python with which to test.
+    required: true
     default: "3.12"
   release:
     description: >-
-      Optional; the name of a workflow artifact containing the code to
-      be built.
+      The name of a workflow artifact containing the code to be built.
+    required: true
     default: release-artifacts
   requirements:
     description: >-
-      Optional; the name of a workflow artifact containing Python
-      package dependency pins.
+      The name of a workflow artifact containing Python package
+      dependency pins.
     default: pip-compile-artifacts
 
 runs:
   using: composite
   steps:
-    - if: inputs.release
-      uses: actions/download-artifact@v8.0.1
+    - uses: actions/download-artifact@v8.0.1
       with:
         name: ${{ inputs.release }}
     - if: inputs.requirements
