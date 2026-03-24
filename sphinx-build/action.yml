@@ -1,0 +1,41 @@
+name: Document code with Sphinx
+description: >-
+  Generates versioned documentation in multiple formats from Sphinx
+  sources via GNU Make and stores the results in a GitHub Actions
+  artifact, an immutable archive.  Installs Python; the makefile
+  targets `build-deps`, which runs as the superuser, and `docs`
+  **MUST** handle other build dependencies.
+
+inputs:
+  artifact-name:
+    description: >-
+      The name of the immutable archive.  The publication workflow
+      uploads its contents to the web hosting platform, e.g., GitHub
+      Pages.
+    required: true
+    default: docs-artifacts
+  python-version:
+    description: >-
+      The version of Python with which to install and run Sphinx.
+    required: true
+    default: "3.12"
+
+runs:
+  using: composite
+  steps:
+    - uses: actions/checkout@v6.0.2
+      with:
+        fetch-depth: 0
+    - uses: actions/setup-python@v6.2.0
+      with:
+        python-version: ${{ inputs.python-version }}
+        cache: pip
+    - shell: bash
+      run: sudo make build-deps
+    - shell: bash
+      run: make docs
+    - uses: actions/upload-artifact@v7.0.0
+      with:
+        name: ${{ inputs.artifact-name }}
+        path: build/*
+        if-no-files-found: error
