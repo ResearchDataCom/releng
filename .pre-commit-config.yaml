@@ -25,3 +25,12 @@ repos:
     rev: v1.7.11
     hooks:
       - id: actionlint
+
+  # Check third-party actions' pins.
+  - repo: local
+    hooks:
+      - id: pinact
+        name: Third-party actions
+        language: unsupported
+        entry: pinact run -u --min-age 7
+        pass_filenames: false
