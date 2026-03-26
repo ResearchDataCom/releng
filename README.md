@@ -17,22 +17,6 @@ greater detail.  For an example of how to use these workflows, refer
 to the
 [Python project template's CI workflow](https://github.com/ResearchDataCom/good-devops-practice/blob/main/python-template/%7B%7B%20cookiecutter.package_slug%20%7D%7D/.github/workflows/ci.yml).
 
-## Maintenance
-
-Mitigate supply chain attacks by
-[pinning actions](https://github.com/suzuki-shunsuke/pinact) to Git
-commit object references.  Unlike symbolic references like `v1.2.3` or
-`main`, Git commit hashes are immutable barring a crack of the
-underlying hash function (SHA-1 by default).  Periodically update
-version pins, but ignore releases created within the last seven (7)
-days.  Remember to review updated actions' release notes for any
-breaking changes.  For more information, refer to
-["Using third-party actions" in the GitHub Actions secure use reference](https://docs.github.com/en/actions/reference/security/secure-use#using-third-party-actions),
-["Specifying Revisions" in the `git rev-parse` command documentation](https://git-scm.com/docs/git-rev-parse#_specifying_revisions),
-[Migrate Git from SHA-1 to a stronger hash function](https://git-scm.com/docs/hash-function-transition),
-and
-[We should all be using dependency cooldowns](https://blog.yossarian.net/2025/11/21/We-should-all-be-using-dependency-cooldowns).
-
 ## Available Workflows
 
 Workflows are listed in alphabetical order.  Refer to the linked
@@ -65,8 +49,20 @@ in a workflow artifact.</dd>
 
 ## References
 
+[GitHub Actions Variables Reference](https://docs.github.com/en/actions/reference/workflows-and-actions/variables)
+
+[Migrate Git from SHA-1 to a stronger hash function](https://git-scm.com/docs/hash-function-transition)
+
 [The Right Way to Handle Permissions in GitHub Actions](https://shreyapohekar.com/blogs/the-right-way-to-handle-permissions-in-github-actions-a-practical-guide-to-staying-secure/)
+
+[Running variations of jobs in a workflow](https://docs.github.com/en/actions/how-tos/write-workflows/choose-what-workflows-do/run-job-variations)
 
 [Securing GitHub Actions Workflows](https://wellarchitected.github.com/library/application-security/recommendations/actions-security/)
 
-[Running variations of jobs in a workflow](https://docs.github.com/en/actions/how-tos/write-workflows/choose-what-workflows-do/run-job-variations)
+["Specifying Revisions" in the `git rev-parse` command documentation](https://git-scm.com/docs/git-rev-parse#_specifying_revisions)
+
+[Status of Python versions](https://devguide.python.org/versions/)
+
+["Using third-party actions" in the GitHub Actions secure use reference](https://docs.github.com/en/actions/reference/security/secure-use#using-third-party-actions)
+
+[We should all be using dependency cooldowns](https://blog.yossarian.net/2025/11/21/We-should-all-be-using-dependency-cooldowns)

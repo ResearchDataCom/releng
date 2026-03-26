@@ -15,9 +15,10 @@ inputs:
     required: true
     default: build-artifacts
   python-version:
-    description: The version of Python with which to test.
+    description: >-
+      The version of Python with which to build distributions.
     required: true
-    default: "3.12"
+    default: "3.13"
   release:
     description: >-
       The name of a workflow artifact containing the code to be built.

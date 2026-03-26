@@ -13,9 +13,11 @@ inputs:
     required: true
     default: pip-compile-artifacts
   python-version:
-    description: The version of Python against which to build.
+    description: >-
+      The version of Python with which to run pre-commit and
+      pip-compile.
     required: true
-    default: "3.12"
+    default: "3.13"
 
 runs:
   using: composite

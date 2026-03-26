@@ -9,8 +9,8 @@ description: >-
 inputs:
   python-version:
     description: The version of Python with which to test.
-    default: "3.12"
     required: true
+    default: "3.13"
   requirements:
     description: >-
       The name of a workflow artifact containing Python package
