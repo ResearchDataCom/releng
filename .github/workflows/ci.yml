@@ -14,15 +14,8 @@ jobs:
   lint:
     runs-on: ubuntu-latest
     steps:
-      - run: |
-          version=v3.9.0
-          asset=pinact_linux_amd64.tar.gz
-          gh release download -R suzuki-shunsuke/pinact "$version" -p "$asset"
-          gh attestation verify "$asset" \
-              -R suzuki-shunsuke/pinact \
-              --signer-workflow suzuki-shunsuke/go-release-workflow/.github/workflows/release.yaml
       - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
-      - uses: pre-commit/action@2c7b3805fd2a0fd8c1884dcaebf91fc102a13ecd # v3.0.1
+      - uses: ./pre-commit
 
   release:
     # Prevent race conditions of more than one release job in case of

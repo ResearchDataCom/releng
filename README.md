@@ -29,14 +29,17 @@ workflow definitions for additional details.
 tags the new release; requires <code>contents: write</code>
 permissions.</dd>
 
+<dt><a href="pre-commit/action.yml">pre-commit</a></dt>
+<dd>Checks code syntax/style using the configured pre-commit
+hooks.</dd>
+
 <dt><a href="publish-github/action.yaml">publish-github</a></dt>
 <dd>Retrieves build artifacts and uploads them to the corresponding
 GitHub release; requires <code>contents: write</code>
 permissions.</dd>
 
-<dt><a href="python-lint/action.yml">python-lint</a></dt>
-<dd>Checks Python code syntax/style using the configured pre-commit
-hooks and generates dependency pins.</dd>
+<dt><a href="python-freeze/action.yml">python-freeze</a></dt>
+<dd>Generates dependency pins.</dd>
 
 <dt><a href="python-test/action.yml">python-test</a></dt>
 <dd>Runs pytest via GNU Make.</dd>

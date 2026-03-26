@@ -1,7 +1,6 @@
-name: Lint Python code
+name: Pin Python code dependencies
 description: >-
-  Checks code syntax/style using the configured pre-commit hooks,
-  which not everyone installs.  Pins dependencies and stores them in a
+  Pins dependencies and stores them in a
   [GitHub Actions workflow artifact](https://docs.github.com/en/actions/concepts/workflows-and-actions/workflow-artifacts),
   an immutable archive, which facilitates reproducible builds.
 
@@ -23,11 +22,16 @@ runs:
   using: composite
   steps:
     - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
-    - uses: pre-commit/action@2c7b3805fd2a0fd8c1884dcaebf91fc102a13ecd # v3.0.1
+    - name: Install Python ${{ inputs.python-version }}
+      uses: actions/setup-python@a309ff8b426b58ec0e2a45f0f869d46889d02405 # v6.2.0
+      with:
+        python-version: ${{ inputs.python-version }}
+        cache: pip
+    - name: Install pip-tools
+      shell: bash
+      run: pip install -r "${GITHUB_ACTION_PATH}/requirements.txt" --require-hashes
     - shell: bash
-      run: pip install pip-tools
-    - shell: bash
-      run: pip-compile
+      run: pip-compile --generate-hashes
     - uses: actions/upload-artifact@bbbca2ddaa5d8feaa63e36b76fdaad77386f024f # v7.0.0
       with:
         name: ${{ inputs.artifact-name }}
