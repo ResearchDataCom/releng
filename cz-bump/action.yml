@@ -23,15 +23,15 @@ inputs:
 runs:
   using: composite
   steps:
-    - uses: actions/checkout@v6.0.2
+    - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
       with:
         fetch-depth: 0
     - id: cz
-      uses: commitizen-tools/commitizen-action@0.27.1
+      uses: commitizen-tools/commitizen-action@338bbd841b75aaee6bf5340e1fa12f6ab58ff9ff # 0.27.1
       with:
         changelog_increment_filename: ${{ inputs.changelog-fragment }}
         github_token: ${{ secrets.GITHUB_TOKEN }}
-    - uses: actions/upload-artifact@v7.0.0
+    - uses: actions/upload-artifact@bbbca2ddaa5d8feaa63e36b76fdaad77386f024f # v7.0.0
       with:
         name: ${{ inputs.artifact-name }}
         path: .

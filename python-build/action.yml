@@ -32,14 +32,14 @@ inputs:
 runs:
   using: composite
   steps:
-    - uses: actions/download-artifact@v8.0.1
+    - uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8.0.1
       with:
         name: ${{ inputs.release }}
     - if: inputs.requirements
-      uses: actions/download-artifact@v8.0.1
+      uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8.0.1
       with:
         name: ${{ inputs.requirements }}
-    - uses: actions/setup-python@v6.2.0
+    - uses: actions/setup-python@a309ff8b426b58ec0e2a45f0f869d46889d02405 # v6.2.0
       with:
         python-version: ${{ inputs.python-version }}
         cache: pip
@@ -47,7 +47,7 @@ runs:
       run: sudo make build-deps
     - shell: bash
       run: make dist
-    - uses: actions/upload-artifact@v7.0.0
+    - uses: actions/upload-artifact@bbbca2ddaa5d8feaa63e36b76fdaad77386f024f # v7.0.0
       with:
         name: ${{ inputs.artifact-name }}
         path: dist/*
