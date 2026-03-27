@@ -48,8 +48,15 @@ runs:
       run: sudo make build-deps
     - shell: bash
       run: make dist
+    # The file with the `.does-not-exist` suffix is listed solely to
+    # force actions/upload-artifact to preserve the directory
+    # structure of the build artifacts.  Developers **MUST NOT**
+    # create this file to avoid a false positive if the build fails;
+    # cf. https://github.com/actions/upload-artifact/issues/174#issuecomment-2878874192.
     - uses: actions/upload-artifact@bbbca2ddaa5d8feaa63e36b76fdaad77386f024f # v7.0.0
       with:
         name: ${{ inputs.artifact-name }}
-        path: dist/*
+        path: |
+          dist
+          96AD5641-7C9D-4E65-81B4-F0889D389D76.does-not-exist
         if-no-files-found: error
