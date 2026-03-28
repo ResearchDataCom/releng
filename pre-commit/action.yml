@@ -8,6 +8,34 @@ description: >-
   [Trivy](https://trivy.dev/).
 
 inputs:
+  access-app-id:
+    description: >-
+      Provide the app ID of a GitHub App used to access private
+      repositories.  When
+      [registering the app](https://docs.github.com/en/apps/creating-github-apps/registering-a-github-app/registering-a-github-app)
+      in the organization, disable webhook functionality and grant
+      **read-only**
+      [repository permissions for "Contents"](https://docs.github.com/en/rest/authentication/permissions-required-for-github-apps#repository-permissions-for-contents).
+      After completing app registration,
+      [generate a private key](https://docs.github.com/en/apps/creating-github-apps/authenticating-with-a-github-app/managing-private-keys-for-github-apps)
+      and install the app, giving it access to selected repositories
+      as appropriate.
+    required: false
+    default: ~
+  access-key:
+    description: >-
+      Log into the GitHub App used to access private repositories with
+      this
+      [private key](https://docs.github.com/en/apps/creating-github-apps/authenticating-with-a-github-app/managing-private-keys-for-github-apps).
+    required: false
+    default: ~
+  owner:
+    description: >-
+      Optionally access private OpenTofu modules in repositories owned
+      by this GitHub account or organization, overriding
+      [github.repository_owner](https://docs.github.com/en/actions/reference/workflows-and-actions/contexts#github-context).
+    required: false
+    default: ~
   python-version:
     description: The version of Python with which to run pre-commit.
     required: true
@@ -62,5 +90,19 @@ runs:
       with:
         path: ~/.cache/pre-commit
         key: pre-commit|${{ inputs.python-version }}|${{ hashFiles('.pre-commit-config.yaml') }}
+    - id: private-repository-access
+      if: inputs.access-app-id && inputs.access-key
+      uses: actions/create-github-app-token@f8d387b68d61c58ab83c6c016672934102569859 # v3.0.0
+      with:
+        app-id: ${{ inputs.access-app-id }}
+        private-key: ${{ inputs.access-key }}
+        owner: ${{ inputs.owner || github.repository_owner }}
+    - if: steps.private-repository-access.outputs.token
+      uses: de-vri-es/setup-git-credentials@5e1f18da68b7039c7f824408d170811aaec93ca8 # v2.1.2
+      with:
+        credentials: |
+          https://x-access-token:${{ steps.private-repository-access.outputs.token }}@github.com/
     - shell: bash
       run: pre-commit run --show-diff-on-failure --color=always --all-files
+      env:
+        GITHUB_TOKEN: ${{ steps.private-repository-access.outputs.token }}
