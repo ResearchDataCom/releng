@@ -1,3 +1,9 @@
+## v2.0.1 (2026-03-28)
+
+### Bug Fixes
+
+- **pre-commit**: give pinact read-only access to private workflows
+
 ## v2.0.0 (2026-03-28)
 
 ### BREAKING CHANGE
