@@ -1,0 +1,33 @@
+name: Pin OpenTofu module dependencies
+description: >-
+  Pins dependencies and stores them in a
+  [GitHub Actions workflow artifact](https://docs.github.com/en/actions/concepts/workflows-and-actions/workflow-artifacts),
+  an immutable archive, which facilitates reproducible builds.  Run
+  this action after pre-commit in the same workflow job.
+
+inputs:
+  artifact-name:
+    description: >-
+      The name of the immutable archive that will contain the
+      dependency pins.
+    required: true
+    default: tofu-providers-lock-artifacts
+
+runs:
+  using: composite
+  steps:
+    - shell: bash
+      run: tofu init
+    - shell: bash
+      run:
+        tofu providers lock
+        --platform=windows_amd64
+        --platform=darwin_arm64
+        --platform=linux_amd64
+        --platform=linux_arm64
+    - uses: actions/upload-artifact@bbbca2ddaa5d8feaa63e36b76fdaad77386f024f # v7.0.0
+      with:
+        name: ${{ inputs.artifact-name }}
+        path: .terraform.lock.hcl
+        if-no-files-found: error
+        include-hidden-files: true

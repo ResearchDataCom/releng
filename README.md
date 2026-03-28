@@ -33,6 +33,9 @@ permissions.</dd>
 <dd>Checks code syntax/style using the configured pre-commit
 hooks.</dd>
 
+<dt><a href="opentofu-freeze/action.yml">opentofu-freeze</a></dt>
+<dd>Generates dependency pins for OpenTofu modules.</dd>
+
 <dt><a href="publish-github/action.yaml">publish-github</a></dt>
 <dd>Retrieves build artifacts and uploads them to the corresponding
 GitHub release; requires <code>contents: write</code>
