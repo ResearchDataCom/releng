@@ -42,7 +42,7 @@ GitHub release; requires <code>contents: write</code>
 permissions.</dd>
 
 <dt><a href="python-freeze/action.yml">python-freeze</a></dt>
-<dd>Generates dependency pins.</dd>
+<dd>Generates dependency pins for Python projects.</dd>
 
 <dt><a href="python-test/action.yml">python-test</a></dt>
 <dd>Runs pytest via GNU Make.</dd>

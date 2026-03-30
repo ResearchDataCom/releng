@@ -1,8 +1,9 @@
-name: Pin Python code dependencies
+name: Pin Python project dependencies
 description: >-
   Pins dependencies and stores them in a
   [GitHub Actions workflow artifact](https://docs.github.com/en/actions/concepts/workflows-and-actions/workflow-artifacts),
-  an immutable archive, which facilitates reproducible builds.
+  an immutable archive, which facilitates reproducible builds.  Run
+  this action after pre-commit in the same workflow job.
 
 inputs:
   artifact-name:
@@ -11,27 +12,15 @@ inputs:
       dependency pins.
     required: true
     default: pip-compile-artifacts
-  python-version:
-    description: >-
-      The version of Python with which to run pre-commit and
-      pip-compile.
-    required: true
-    default: "3.13"
 
 runs:
   using: composite
   steps:
-    - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
-    - name: Install Python ${{ inputs.python-version }}
-      uses: actions/setup-python@a309ff8b426b58ec0e2a45f0f869d46889d02405 # v6.2.0
-      with:
-        python-version: ${{ inputs.python-version }}
-        cache: pip
     - name: Install pip-tools
       shell: bash
       run: pip install -r "${GITHUB_ACTION_PATH}/requirements.txt" --require-hashes
     - shell: bash
-      run: pip-compile --generate-hashes
+      run: pip-compile
     - uses: actions/upload-artifact@bbbca2ddaa5d8feaa63e36b76fdaad77386f024f # v7.0.0
       with:
         name: ${{ inputs.artifact-name }}
