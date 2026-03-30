@@ -1,3 +1,14 @@
+## v2.1.0 (2026-03-30)
+
+### New Features
+
+- **opentofu-freeze**: pin OpenTofu module dependencies
+
+### Refactoring
+
+- standardize workflow file extensions
+- **python-freeze**: control pip-tools' behavior via a configuration file
+
 ## v2.0.1 (2026-03-28)
 
 ### Bug Fixes
