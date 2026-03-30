@@ -15,7 +15,7 @@ support matrix strategies.
 describes the underlying methodology and recommended tooling in
 greater detail.  For an example of how to use these workflows, refer
 to the
-[Python project template's CI workflow](https://github.com/ResearchDataCom/good-devops-practice/blob/main/python-template/%7B%7B%20cookiecutter.package_slug%20%7D%7D/.github/workflows/ci.yml).
+[Python project template's CI workflow](https://github.com/ResearchDataCom/good-devops-practice/blob/main/python-template/%7B%7B%20cookiecutter.package_slug%20%7D%7D/.github/workflows/ci.yaml).
 
 ## Available Workflows
 
@@ -24,16 +24,16 @@ workflow definitions for additional details.
 
 <dl>
 
-<dt><a href="cz-bump/action.yml">cz-bump</a></dt>
+<dt><a href="cz-bump/action.yaml">cz-bump</a></dt>
 <dd>Determines the next version number, updates project metadata, and
 tags the new release; requires <code>contents: write</code>
 permissions.</dd>
 
-<dt><a href="pre-commit/action.yml">pre-commit</a></dt>
+<dt><a href="pre-commit/action.yaml">pre-commit</a></dt>
 <dd>Checks code syntax/style using the configured pre-commit
 hooks.</dd>
 
-<dt><a href="opentofu-freeze/action.yml">opentofu-freeze</a></dt>
+<dt><a href="opentofu-freeze/action.yaml">opentofu-freeze</a></dt>
 <dd>Generates dependency pins for OpenTofu modules.</dd>
 
 <dt><a href="publish-github/action.yaml">publish-github</a></dt>
@@ -41,13 +41,13 @@ hooks.</dd>
 GitHub release; requires <code>contents: write</code>
 permissions.</dd>
 
-<dt><a href="python-freeze/action.yml">python-freeze</a></dt>
+<dt><a href="python-freeze/action.yaml">python-freeze</a></dt>
 <dd>Generates dependency pins for Python projects.</dd>
 
-<dt><a href="python-test/action.yml">python-test</a></dt>
+<dt><a href="python-test/action.yaml">python-test</a></dt>
 <dd>Runs pytest via GNU Make.</dd>
 
-<dt><a href="python-build/action.yml">python-build</a></dt>
+<dt><a href="python-build/action.yaml">python-build</a></dt>
 <dd>Builds a Python distribution via GNU Make and stores the results
 in a workflow artifact.</dd>
 
