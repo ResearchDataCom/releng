@@ -49,7 +49,7 @@ runs:
       uses: actions/setup-python@a309ff8b426b58ec0e2a45f0f869d46889d02405 # v6.2.0
       with:
         python-version: ${{ inputs.python-version }}
-        cache: pip
+        cache: ${{ hashFiles('pyproject.toml') && 'pip' || null }}
     - name: Install pre-commit
       shell: bash
       run: pip install -r "${GITHUB_ACTION_PATH}/requirements.txt" --require-hashes
