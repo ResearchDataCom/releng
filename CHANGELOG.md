@@ -1,3 +1,9 @@
+## v2.1.1 (2026-03-31)
+
+### Bug Fixes
+
+- **pre-commit**: enable Python dependency caching only for Python projects
+
 ## v2.1.0 (2026-03-30)
 
 ### New Features
