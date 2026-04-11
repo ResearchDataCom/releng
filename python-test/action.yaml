@@ -1,9 +1,9 @@
 name: Test Python code
 description: >-
-  Runs pytest via GNU Make.  Installs Python and Google Chrome, along
-  with the matching version of chromedriver.  The makefile targets
-  `build-deps`, which runs as the superuser, and `test` **MUST**
-  handle other test dependencies.  Supports
+  Runs pytest via GNU Make.  Installs Python along with matching
+  versions of Google Chrome and ChromeDriver for use with Selenium.
+  The makefile targets `build-deps`, which runs as the superuser, and
+  `test` **MUST** handle other test dependencies.  Supports
   [matrix strategies](https://docs.github.com/en/actions/how-tos/write-workflows/choose-what-workflows-do/run-job-variations).
 
 inputs:
@@ -25,10 +25,14 @@ runs:
       with:
         python-version: ${{ inputs.python-version }}
         cache: pip
-    - uses: browser-actions/setup-chrome@4f8e94349a351df0f048634f25fec36c3c91eded # v2.1.1
+    - id: setup-chrome
+      uses: browser-actions/setup-chrome@4f8e94349a351df0f048634f25fec36c3c91eded # v2.1.1
       with:
         install-dependencies: true
         install-chromedriver: true
+    - shell: bash
+      run: |
+        echo "SE_BROWSER_PATH=${{ steps.setup-chrome.outputs.chrome-path }}" >> "$GITHUB_ENV"
     - shell: bash
       run: sudo make build-deps
     - if: inputs.requirements
